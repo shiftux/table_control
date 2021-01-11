@@ -1,5 +1,5 @@
 /*********************************
- * Electric table controller
+ * Electric table height controller
  * Author: shiftux
  * Jan 2021
  ********************************/
