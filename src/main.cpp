@@ -40,7 +40,7 @@ states state = STOP;
 switchPositions switchPosition  = SWITCH_POS_HIGH;
 int switchState = 3;
 long movmentStartTime;
-int movementTimeout = 3000; //ms
+int movementTimeout = 3000; // ms
 
 // switch & button state getters
 int getSwitchPos(){
@@ -96,10 +96,10 @@ void stop(){
 
 // limit checks
 bool hitLowerLimit(){
-  if (digitalRead(LOW_HALL_SENSOR)){
+  if (digitalRead(LOW_HALL_SENSOR) == 1){
     return true;
   }
-  else if (digitalRead(END_SWITCH)){
+  else if (digitalRead(END_SWITCH) == 1){
     return true;
   }
   else {
@@ -107,7 +107,7 @@ bool hitLowerLimit(){
   }
 };
 bool hitUpperLimit(){
-  if (digitalRead(UP_HALL_SENSOR)){
+  if (digitalRead(UP_HALL_SENSOR) == 1){
     return true;
   }
   else {
@@ -248,9 +248,9 @@ void loop() {
     digitalWrite(RELAIS_DOWN, OFF);
     digitalWrite(RELAIS_UP, OFF);
   }
-  Serial.print("State: ");
-  Serial.println(state);
-  // Serial.println(digitalRead(SWITCH_UP));
+  // Serial.print("State: ");
+  // Serial.println(state);
+  // Serial.println(digitalRead(END_SWITCH));
   // Serial.println(digitalRead(SWITCH_DOWN));
   // Serial.print("pos : ");
   // Serial.println(getSwitchPos());
@@ -260,31 +260,3 @@ void loop() {
   // if (switchToggleDown()){Serial.println("TOGGLED DOWN");};
   // delay(1000);
 }
-
-
-
-// main loop bkp
-// void loop() {
-//   if (state == STOP) {
-//     stopActions();
-//   }
-//   else if (state == MOVING_UP) {
-//     movingUpActions();
-//   }
-//   else if (state == MOVING_DOWN) {
-//     movingDownActions();
-//   }
-//   else if (state == SHIFT_UP) {
-//     shiftUpActions();
-//   }
-//   else if (state == SHIFT_DOWN) {
-//     shiftDownActions();
-//   }
-//   else{
-//     digitalWrite(RELAIS_DOWN, OFF);
-//     digitalWrite(RELAIS_UP, OFF);
-//   }
-//   Serial.print("State: ");
-//   Serial.println(state);
-//   delay(100);
-// }
