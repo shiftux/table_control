@@ -96,7 +96,7 @@ void stop(){
 
 // limit checks
 bool hitLowerLimit(){
-  if (digitalRead(LOW_HALL_SENSOR) == 1){
+  if (digitalRead(LOW_HALL_SENSOR) == 0){ // hall sensor is 0 when magnet is present
     return true;
   }
   else if (digitalRead(END_SWITCH) == 1){
@@ -107,7 +107,7 @@ bool hitLowerLimit(){
   }
 };
 bool hitUpperLimit(){
-  if (digitalRead(UP_HALL_SENSOR) == 1){
+  if (digitalRead(UP_HALL_SENSOR) == 0){
     return true;
   }
   else {
