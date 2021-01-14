@@ -221,7 +221,7 @@ void my_init(){
 
 void setup() {
   my_init();
-  Serial.begin(9600); // open the serial port at 9600 bps
+  // Serial.begin(9600); // open the serial port at 9600 bps
   switchState = getSwitchPos();
   movmentStartTime = millis();
   stop();
