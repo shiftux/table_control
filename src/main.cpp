@@ -11,12 +11,14 @@
 #define UP_HALL_SENSOR 14
 #define LOW_HALL_SENSOR 15
 #define END_SWITCH 16
-#define SWITCH_UP 10
-#define SWITCH_DOWN 9
+#define SWITCH_UP 5
+#define SWITCH_DOWN 6
 #define BUTTON_UP 8
 #define BUTTON_DOWN 7
-#define RELAIS_DOWN 11
-#define RELAIS_UP 12
+#define RELAIS_4 9
+#define RELAIS_3 10
+#define RELAIS_2 11
+#define RELAIS_1 12
 #define OFF 0
 #define ON 1
 
@@ -40,7 +42,8 @@ states state = STOP;
 switchPositions switchPosition  = SWITCH_POS_HIGH;
 int switchState = 3;
 long movmentStartTime;
-int movementTimeout = 3000; // ms
+int upMovementTimeout = 15000; // ms
+int downMovementTimeout = 10000; // ms
 
 // switch & button state getters
 int getSwitchPos(){
@@ -79,15 +82,21 @@ bool buttonUpActive(){
 }
 
 // motor movements
+void motorStop(){
+  digitalWrite(RELAIS_1, OFF);
+  digitalWrite(RELAIS_2, OFF);
+  digitalWrite(RELAIS_3, OFF);
+  digitalWrite(RELAIS_4, OFF);
+};
 void motorMoveUp(){
-  digitalWrite(RELAIS_UP, HIGH);
+  motorStop();
+  digitalWrite(RELAIS_1, ON);
+  digitalWrite(RELAIS_3, ON);
 };
 void motorMoveDown(){
-  digitalWrite(RELAIS_DOWN, HIGH);
-};
-void motorStop(){
-  digitalWrite(RELAIS_DOWN, LOW);
-  digitalWrite(RELAIS_UP, LOW);
+  motorStop();
+  digitalWrite(RELAIS_2, ON);
+  digitalWrite(RELAIS_4, ON);
 };
 void stop(){
   motorStop();
@@ -114,8 +123,15 @@ bool hitUpperLimit(){
     return false;
   }
 };
-bool timeoutHit(){
-  if (millis() - movmentStartTime > movementTimeout){
+bool downTimeoutHit(){
+  if (millis() - movmentStartTime > downMovementTimeout){
+    return true;
+  } else {
+    return false;
+  }
+};
+bool upTimeoutHit(){
+  if (millis() - movmentStartTime > upMovementTimeout){
     return true;
   } else {
     return false;
@@ -171,7 +187,7 @@ void shiftUpActions(){
   if (hitUpperLimit()){
     stop();
   }
-  else if (timeoutHit()){
+  else if (upTimeoutHit()){
     stop();
   }
   else if (switchToggleDown()){
@@ -191,7 +207,7 @@ void shiftDownActions(){
   if (hitLowerLimit()){
     stop();
   }
-  else if (timeoutHit()){
+  else if (downTimeoutHit()){
     stop();
   }
   else if (switchToggleUp()){
@@ -215,8 +231,10 @@ void my_init(){
   pinMode(SWITCH_DOWN, INPUT);
   pinMode(BUTTON_UP, INPUT);
   pinMode(BUTTON_DOWN, INPUT);
-  pinMode(RELAIS_DOWN, OUTPUT);
-  pinMode(RELAIS_UP, OUTPUT);
+  pinMode(RELAIS_1, OUTPUT);
+  pinMode(RELAIS_2, OUTPUT);
+  pinMode(RELAIS_3, OUTPUT);
+  pinMode(RELAIS_4, OUTPUT);
 }
 
 void setup() {
@@ -245,18 +263,6 @@ void loop() {
     shiftDownActions();
   }
   else{
-    digitalWrite(RELAIS_DOWN, OFF);
-    digitalWrite(RELAIS_UP, OFF);
+    stop();
   }
-  // Serial.print("State: ");
-  // Serial.println(state);
-  // Serial.println(digitalRead(END_SWITCH));
-  // Serial.println(digitalRead(SWITCH_DOWN));
-  // Serial.print("pos : ");
-  // Serial.println(getSwitchPos());
-  // Serial.print("state : ");
-  // Serial.println(switchState);
-  // if (switchToggleUp()){Serial.println("TOGGLED UP");};
-  // if (switchToggleDown()){Serial.println("TOGGLED DOWN");};
-  // delay(1000);
 }
