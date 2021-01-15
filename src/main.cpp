@@ -13,8 +13,8 @@
 #define END_SWITCH 16
 #define SWITCH_UP 5
 #define SWITCH_DOWN 6
-#define BUTTON_UP 8
-#define BUTTON_DOWN 7
+#define BUTTON_UP 7
+#define BUTTON_DOWN 8
 #define RELAIS_4 9
 #define RELAIS_3 10
 #define RELAIS_2 11
@@ -75,10 +75,10 @@ bool switchToggleDown(){
   }
 };
 bool buttonDownActive(){
-  return digitalRead(BUTTON_DOWN);
+  return !digitalRead(BUTTON_DOWN);
 }
 bool buttonUpActive(){
-  return digitalRead(BUTTON_UP);
+  return !digitalRead(BUTTON_UP);
 }
 
 // motor movements
