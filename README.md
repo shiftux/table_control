@@ -6,11 +6,15 @@ I have an electric desk that I can move from a sitting to a standing position. H
 ### State Machine
 I implemented a state machine using 5 states. Where "Moving Up/Down" is used when the buttons are manually pressed (move the table a bit) and "Shift Up/Down" is used to move the table to either the top or bottom position.
 
-![The State Machine](./images/state_machine.pdf "State Machine")
+<!-- ![The State Machine](./images/state_machine.pdf "State Machine") -->
 
 ### Wiring diagram
 The wiring diagram is pretty straight forward using pull down resistors where required to prevent the Arduino from getting floating / noisy input.
-![The Wiring Diagram](./images/connectivity_diagram.pdf "Wiring Diagram")
+
+<object data="./images/connectivity_diagram.pdf" type="application/pdf" width="700px" height="700px">
+</object>
+
+<!-- ![The Wiring Diagram](./images/connectivity_diagram.pdf "Wiring Diagram") -->
 
 ### Components used
 - 1x electric Table (and its buttons)
