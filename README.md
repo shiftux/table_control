@@ -1,8 +1,11 @@
 # Automating an electric standing desk
 The perfect ergonomic desk solution for your prolonged home office during Covid.
 
+Check out my article for a detailed description of the project [https://shiftux.org/making_projects/standing_desk.html](https://shiftux.org/making_projects/standing_desk.html)
 ### Intro
 I have an electric desk that I can move from a sitting to a standing position. However I have to keep pressing a button for around 15 seconds, and then never really know exactly where to stop, since there is no top or bottom reference, except my feeling. Needless to say I decided to automate this.
+
+[![Standing Desk Automation](http://img.youtube.com/vi/ZzHkn_32jh8/0.jpg)](https://www.youtube.com/watch?v=ZzHkn_32jh8 "Standing Desk Automation")
 
 ### State Machine
 I implemented a state machine using 5 states. Where "Moving Up/Down" is used when the buttons are manually pressed (move the table a bit) and "Shift Up/Down" is used to move the table to either the top or bottom position.
@@ -21,7 +24,7 @@ The wiring diagram is pretty straight forward using pull down resistors where re
 - 1x [Arduino Nano](https://www.aliexpress.com/item/4000112750588.html?spm=a2g0s.9042311.0.0.27424c4dbc3uKd)
 - 4x [Magnets](https://www.conrad.ch/de/p/tru-components-1572118-permanent-magnet-rund-x-h-5-mm-x-2-mm-n35eh-1-18-1-2-t-grenztemperatur-max-200-c-1572118.html)
 - 1x [Switch](https://www.conrad.ch/de/p/apem-5239a-52390003-kippschalter-250-v-ac-3-a-1-x-ein-aus-ein-rastend-0-rastend-1-st-700179.html)
-- 1x End Switch
+- 1x [Micro switch as End Switch](https://www.conrad.de/de/p/marquardt-mikroschalter-1050-5202-250-v-ac-5-a-1-x-ein-ein-tastend-1-st-703137.html)
 - Loads of [DuPont Connectors](https://www.aliexpress.com/item/4000570942676.html?spm=a2g0s.9042311.0.0.27424c4dosd7NR)
 - 5 10kO Resistors (pull down)
 - Cable (small diameter for all the electronics and a bit larger for the relais and motor power)
