@@ -5,6 +5,7 @@ Check out my article for a detailed description of the project [https://shiftux.
 ### Intro
 I have an electric desk that I can move from a sitting to a standing position. However I have to keep pressing a button for around 15 seconds, and then never really know exactly where to stop, since there is no top or bottom reference, except my feeling. Needless to say I decided to automate this.
 
+### Project Video
 [![Standing Desk Automation](http://img.youtube.com/vi/ZzHkn_32jh8/0.jpg)](https://www.youtube.com/watch?v=ZzHkn_32jh8 "Standing Desk Automation")
 
 ### State Machine
