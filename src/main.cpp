@@ -42,8 +42,8 @@ states state = STOP;
 switchPositions switchPosition  = SWITCH_POS_HIGH;
 int switchState = 3;
 long movmentStartTime;
-int upMovementTimeout = 15000; // ms
-int downMovementTimeout = 10000; // ms
+int upMovementTimeout = 16000; // ms
+int downMovementTimeout = 12000; // ms
 
 // switch & button state getters
 int getSwitchPos(){
