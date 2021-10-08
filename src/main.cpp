@@ -6,6 +6,8 @@
 
 #include <Arduino.h>
 
+bool debug = true;
+
 // pin names
 // pinout https://components101.com/microcontrollers/arduino-nano
 #define UP_HALL_SENSOR 14
@@ -33,8 +35,7 @@ enum states {
 
 enum switchPositions {
   SWITCH_POS_HIGH,
-  SWITCH_POS_LOW,
-  SWITCH_POS_NEUTRAL
+  SWITCH_POS_LOW
 };
 
 // global vars
@@ -43,19 +44,17 @@ switchPositions switchPosition  = SWITCH_POS_HIGH;
 int switchState = 3;
 long movmentStartTime;
 int upMovementTimeout = 16000; // ms
-int downMovementTimeout = 12000; // ms
+int downMovementTimeout = 13500; // ms
 
 // switch & button state getters
 int getSwitchPos(){
   if(digitalRead(SWITCH_DOWN) == 1){
     switchPosition = SWITCH_POS_LOW;
   }
-  else if(digitalRead(SWITCH_UP) == 1){
+  if(digitalRead(SWITCH_UP) == 1){
     switchPosition = SWITCH_POS_HIGH;
   }
-  else{
-    switchPosition = SWITCH_POS_NEUTRAL;
-  }
+  if(debug) { Serial.print("Got switch state: ");Serial.println(switchPosition); }
   return switchPosition;
 };
 bool switchToggleUp(){
@@ -100,15 +99,18 @@ void motorMoveDown(){
 };
 void stop(){
   motorStop();
+  if(debug) { Serial.println("Setting state: STOP"); }
   state = STOP;
 };
 
 // limit checks
 bool hitLowerLimit(){
   if (digitalRead(LOW_HALL_SENSOR) == 0){ // hall sensor is 0 when magnet is present
+    if(debug) { Serial.println("Hit lower hall sensor"); }
     return true;
   }
   else if (digitalRead(END_SWITCH) == 1){
+    if(debug) { Serial.println("Hit lower lower end switch"); }
     return true;
   }
   else {
@@ -117,6 +119,7 @@ bool hitLowerLimit(){
 };
 bool hitUpperLimit(){
   if (digitalRead(UP_HALL_SENSOR) == 0){
+    if(debug) { Serial.println("Hit upper hall sensor"); }
     return true;
   }
   else {
@@ -125,6 +128,7 @@ bool hitUpperLimit(){
 };
 bool downTimeoutHit(){
   if (millis() - movmentStartTime > downMovementTimeout){
+    if(debug) { Serial.println("Hit down time limit timeout"); }
     return true;
   } else {
     return false;
@@ -132,6 +136,7 @@ bool downTimeoutHit(){
 };
 bool upTimeoutHit(){
   if (millis() - movmentStartTime > upMovementTimeout){
+    if(debug) { Serial.println("Hit up time limit timeout"); }
     return true;
   } else {
     return false;
@@ -142,18 +147,23 @@ bool upTimeoutHit(){
 void stopActions(){
   motorStop();
   if (switchToggleDown()){
+    if(debug) { Serial.println("Setting state: SHIFT_DOWN"); }
     state = SHIFT_DOWN;
   }
   else if (switchToggleUp()){
+    if(debug) { Serial.println("Setting state: SHIFT_UP"); }
     state = SHIFT_UP;
   }
   else if (buttonDownActive()){
+    if(debug) { Serial.println("Setting state: MOVING_DOWN"); }
     state = MOVING_DOWN;
   }
   else if (buttonUpActive()){
+    if(debug) { Serial.println("Setting state: MOVING_UP"); }
     state = MOVING_UP;
   }
   else {
+    if(debug) { Serial.println("Setting state: STOP"); }
     state = STOP;
   }
   movmentStartTime = millis();
@@ -161,24 +171,30 @@ void stopActions(){
 
 void movingUpActions(){
   if (hitUpperLimit()){
+    if(debug) { Serial.println("not moving up: found upper limit"); }
     stop();
   }
   else if (!buttonUpActive()){
+    if(debug) { Serial.println("not moving up: button released"); }
     stop();
   }
   else {
+    if(debug) { Serial.println("moving up"); }
     motorMoveUp();
   }
 };
 
 void movingDownActions(){
   if (hitLowerLimit()){
+    if(debug) { Serial.println("not moving down: found lower limit"); }
     stop();
   }
   else if (!buttonDownActive()){
+    if(debug) { Serial.println("not moving down: button released"); }
     stop();
   }
   else {
+    if(debug) { Serial.println("moving down"); }
     motorMoveDown();
   }
 };
@@ -191,7 +207,7 @@ void shiftUpActions(){
     stop();
   }
   else if (switchToggleDown()){
-    stop();
+    motorStop();
     state = SHIFT_DOWN;
   }
   else if (buttonDownActive()){
@@ -211,7 +227,7 @@ void shiftDownActions(){
     stop();
   }
   else if (switchToggleUp()){
-    stop();
+    motorStop();
     state = SHIFT_UP;
   }
   else if (buttonUpActive()){
@@ -239,7 +255,7 @@ void my_init(){
 
 void setup() {
   my_init();
-  // Serial.begin(9600); // open the serial port at 9600 bps
+  if(debug) { Serial.begin(9600); }// open the serial port at 9600 bps
   switchState = getSwitchPos();
   movmentStartTime = millis();
   stop();
